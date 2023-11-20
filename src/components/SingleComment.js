@@ -1,7 +1,6 @@
 import { Button, ListGroup } from 'react-bootstrap'
-import { TrashFill } from 'react-bootstrap-icons' 
 
-const SingleComment = ({ comment }) => {
+const SingleComment = ({ comment,updateFunction}) => {
   const deleteComment = async (asin) => {
     try {
       let response = await fetch(
@@ -15,7 +14,7 @@ const SingleComment = ({ comment }) => {
       )
       if (response.ok) {
         alert('Commento è stato eliminato!');
-  
+        updateFunction();
       } else {
         throw new Error('Commento non è stato eliminato!');
       }

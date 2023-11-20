@@ -4,7 +4,7 @@ import AddComment from './AddComment';
 import Loading from './Loading';
 import Error from './Error';
 
-const CommentArea = ({ asin }) => {
+const CommentArea = ({ asin,updateFunction}) => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -42,41 +42,14 @@ const CommentArea = ({ asin }) => {
     }
   }, [asin]);
 
-  const updateComments = async () => {
-    await getComments();
-  };
-
-  const removeCommentAndUpdateList = async (asin) => {
-    try {
-      let response = await fetch(
-        `https://striveschool-api.herokuapp.com/api/comments/` + asin,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTVhN2VjZWUxMjM2NjAwMTgxNzQ1NmYiLCJpYXQiOjE3MDA0Mjk1MTgsImV4cCI6MTcwMTYzOTExOH0.lrQVtahFptJdg2z1DmqToOKozDez2IAnpYmB0E7rSs0',
-          },
-        }
-      );
-      if (response.ok) {
-        setComments(prevComments =>
-          prevComments.filter(comment => comment.asin !== asin)
-        );
-      } else {
-        throw new Error('Errore commento non eliminato');
-      }
-    } catch (error) {
-      console.error('Errore commento non eliminato:', error);
-    }
-  };  
-  
-  return (
+    return (
     <div className="text-center mb-2">
       {isLoading && <Loading />}
       {isError && <Error />}
-      <AddComment asin={asin} updateComments={updateComments} />
+      <AddComment asin={asin} updateFunction={getComments} />
       <CommentList
         commentsToShow={comments}
-        removeCommentAndUpdateList={removeCommentAndUpdateList}
+        updateFunction={getComments}
       />
     </div>
   );

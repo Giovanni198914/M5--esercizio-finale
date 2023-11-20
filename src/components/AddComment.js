@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
-const AddComment = ({ asin }) => {
+const AddComment = ({ asin,updateFunction}) => {
   const [comment, setComment] = useState({
     comment: '',
     rate: 0,
@@ -47,6 +47,7 @@ const AddComment = ({ asin }) => {
           rate: 0,
           elementId: null,
         });
+        updateFunction();
       } else {
         throw new Error('Errore! Controlla per favore!.');
       }
